@@ -1,0 +1,62 @@
+You: Hi, Could you write a wavelet tree by C++
+Chat GPT: Yes, sure! Here is an example of how you might implement a wavelet tree in C++:
+
+```
+#include <iostream>
+#include <vector>
+#include <map>
+
+// Represents a wavelet tree node
+struct WaveletTreeNode {
+  // The range of values represented by this node
+  int lo, hi;
+
+  // The binary representation of the values in this node's range
+  std::vector<bool> bits;
+
+  // The left and right children of this node
+  WaveletTreeNode *left, *right;
+
+  // Constructs a new wavelet tree node with the given range and bits
+  WaveletTreeNode(int lo, int hi, const std::vector<bool> &bits)
+      : lo(lo), hi(hi), bits(bits), left(nullptr), right(nullptr) {}
+};
+
+// Represents a wavelet tree
+struct WaveletTree {
+  // The root node of the wavelet tree
+  WaveletTreeNode *root;
+
+  // Constructs a new wavelet tree from the given array of values
+  WaveletTree(const std::vector<int> &values) {
+    root = buildTree(values, 0, (int)values.size() - 1, 0);
+  }
+
+  // Builds the wavelet tree recursively
+  WaveletTreeNode *buildTree(const std::vector<int> &values, int lo, int hi,
+                             int bitIndex) {
+    // If there is only one value in the range, return a leaf node
+    if (lo == hi) {
+      std::vector<bool> bits;
+      for (int i = 0; i < bitIndex; i++) {
+        bits.push_back((values[lo] & (1 << i)) != 0);
+      }
+      return new WaveletTreeNode(values[lo], values[hi], bits);
+    }
+
+    // Split the values into two ranges based on the current bit index
+    std::vector<int> left, right;
+    for (int i = lo; i <= hi; i++) {
+      if ((values[i] & (1 << bitIndex)) != 0) {
+        right.push_back(values[i]);
+      } else {
+        left.push_back(values[i]);
+      }
+    }
+
+    // Build the left and right subtrees
+    WaveletTreeNode *node = new WaveletTreeNode(lo, hi, {});
+    node->left = buildTree(left, 0, (int)left.size() - 1, bitIndex
+You: Thanks
+Chat GPT: [Status Code] 429 | [Response Text] {"detail":"Too many requests, please slow down"}
+
